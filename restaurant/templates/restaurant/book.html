@@ -1,18 +1,46 @@
-<!-- restaurant/templates/restaurant/book.html -->
 {% extends 'restaurant/base.html' %}
 
 {% block title %}Book a Table - Little Lemon Restaurant{% endblock %}
 
 {% block content %}
-    <section class="booking-section">
-        <h2 class="booking-title">Book a Table</h2>
-        <p class="booking-text">Fill out the form below to reserve a table at Little Lemon Restaurant.</p>
+<section class="booking-section">
+    <h2 class="booking-title">Book a Table</h2>
+    <p class="booking-text">Fill out the form below to reserve a table at Little Lemon Restaurant.</p>
 
-        <!-- Booking Form -->
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}  <!-- This will render the form fields (first name, date, slot, etc.) -->
-            <button type="submit">Book Now</button>
-        </form>
-    </section>
+    <!-- Booking Form -->
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- This will render the form fields (first name, date, slot, etc.) -->
+
+        <button type="submit">Book Now</button>
+    </form>
+</section>
+
+<script>
+    // JavaScript to dynamically disable already booked slots
+    const dateInput = document.querySelector('[name="reservation_date"]');
+    const slotSelect = document.querySelector('#id_reservation_slot');  // Corrected to use the form's slot select
+
+    dateInput.addEventListener('change', function() {
+        const selectedDate = dateInput.value;
+
+        // Make an API call to get the booked slots for the selected date
+        fetch(`/api/booked-slots/?date=${selectedDate}`)
+            .then(response => response.json())
+            .then(data => {
+                const bookedSlots = data.booked_slots;
+
+                // Disable or grey out the booked time slots
+                slotSelect.querySelectorAll('option').forEach(option => {
+                    if (bookedSlots.includes(option.value)) {
+                        option.disabled = true;
+                        option.style.color = 'grey';  // Make grey
+                    } else {
+                        option.disabled = false;
+                        option.style.color = 'black';  // Active options
+                    }
+                });
+            });
+    });
+</script>
 {% endblock %}

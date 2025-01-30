@@ -5,7 +5,7 @@ from .models import ItemOfTheDay
 class ItemOfTheDaySerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemOfTheDay
-        fields = ['menu_item']
+        fields = ['menu_item']  # Include any additional fields if necessary
 
 # LittleLemonAPI/views.py
 from rest_framework.permissions import IsAuthenticated

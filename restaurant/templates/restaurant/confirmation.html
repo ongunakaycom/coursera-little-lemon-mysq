@@ -1,0 +1,12 @@
+<!-- restaurant/templates/restaurant/confirmation.html -->
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Booking Confirmation - Little Lemon Restaurant{% endblock %}
+
+{% block content %}
+    <section class="confirmation-section">
+        <h2>Your booking has been confirmed!</h2>
+        <p>Thank you for booking a table with us. We look forward to serving you!</p>
+        <a href="{% url 'reservations' %}">View Upcoming Reservations</a>
+    </section>
+{% endblock %}

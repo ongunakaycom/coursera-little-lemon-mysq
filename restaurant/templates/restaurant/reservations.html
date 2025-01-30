@@ -1,19 +1,10 @@
-<!-- restaurant/templates/restaurant/reservations.html -->
 {% extends 'restaurant/base.html' %}
 
-{% block title %}Reservations - Little Lemon Restaurant{% endblock %}
+{% block title %}Upcoming Reservations - Little Lemon Restaurant{% endblock %}
 
 {% block content %}
-    <section class="reservation-section">
-        <h2 class="reservation-title">Upcoming Reservations</h2>
-        {% if bookings %}
-            <ul>
-                {% for booking in bookings %}
-                    <li>{{ booking.first_name }} - Table {{ booking.table }} on {{ booking.reservation_date }} at {{ booking.reservation_slot }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No bookings available for the selected date.</p>
-        {% endif %}
+    <section class="reservations-section">
+        <h2>Upcoming Reservations</h2>
+        <!-- This part has been removed -->
     </section>
 {% endblock %}
