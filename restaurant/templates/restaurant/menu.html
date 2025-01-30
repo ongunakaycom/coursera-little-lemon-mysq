@@ -1,26 +1,18 @@
 {% extends 'restaurant/base.html' %}
 
 {% block content %}
-    <section>
-        <h2>Welcome to Little Lemon Restaurant!</h2>
-        <p>Explore our delicious menu and make a reservation today.</p>
-    </section>
-
-    <!-- Dynamically Render Menu Items on Home Page -->
-    <section>
-        <h2>Our Menu</h2>
-        <p>Explore our delicious dishes below.</p>
-
-        <div class="menu-container">
-            {% for item in menu_items %}
+    <h1>Our Menu</h1>
+    {% if menu %}
+        <div class="menu-items">
+            {% for item in menu %}
                 <div class="menu-item">
                     <h3>{{ item.name }}</h3>
                     <p>{{ item.description }}</p>
                     <p class="price">${{ item.price }}</p>
                 </div>
-            {% empty %}
-                <p>No menu items available at the moment.</p>
             {% endfor %}
         </div>
-    </section>
+    {% else %}
+        <p>No menu items available at the moment.</p>
+    {% endif %}
 {% endblock %}

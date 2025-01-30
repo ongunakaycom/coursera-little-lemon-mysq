@@ -10,7 +10,8 @@ from . import serializers
 # Views for general pages
 
 def home(request):
-    menu_items = MenuItem.objects.all()
+    menu_items = MenuItem.objects.filter(available=True)  # Filter available items
+    print(menu_items)  # Debug: Print the queryset to confirm it's not empty
     return render(request, "restaurant/home.html", {"menu_items": menu_items})
 
 def about(request):
