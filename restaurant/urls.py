@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import home, menu, menu_item
+from .views import home, menu, menu_item, about, reservations  # Import reservations view
 
 urlpatterns = [
-    path('', home, name='home'),  # Home page
-    path('menu/', menu, name='menu'),  # Menu page
-    path('menu_item/<int:pk>/', menu_item, name='menu_item'),  # Individual menu item
-    # other paths
+    path('', home, name='home'),
+    path('about/', about, name='about'),
+    path('menu/', menu, name='menu'),
+    path('reservations/', reservations, name='reservations'),  # Add the reservations URL pattern
 ]
