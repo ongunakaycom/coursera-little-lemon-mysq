@@ -8,19 +8,74 @@
     <p class="booking-text">Fill out the form below to reserve a table at Little Lemon Restaurant.</p>
 
     <!-- Booking Form -->
-    <form method="POST">
+    <form method="POST" id="booking-form">
         {% csrf_token %}
-        {{ form.as_p }}  <!-- This will render the form fields (first name, date, slot, etc.) -->
+        
+        <!-- Guest Name -->
+        <div class="form-group">
+            <label for="id_first_name">Guest Name:</label>
+            {{ form.first_name }}  <!-- This will render the guest name input field -->
+        </div>
+
+        <!-- Reservation Date -->
+        <div class="form-group">
+            <label for="id_reservation_date">Reservation Date:</label>
+            {{ form.reservation_date }}  <!-- This will render the date input field -->
+        </div>
+
+        <!-- Number of Guests -->
+        <div class="form-group">
+            <label for="id_guests">Number of Guests:</label>
+            {{ form.guests }}  <!-- This will render the number of guests input field -->
+        </div>
+
+        <!-- Time Slot Dropdown -->
+        <div class="form-group">
+            <label for="id_reservation_slot">Choose a Time Slot:</label>
+            <select id="id_reservation_slot" name="reservation_slot">
+                <option value="" disabled selected>Select a time slot</option>
+                <!-- Time slots will be populated dynamically -->
+            </select>
+        </div>
 
         <button type="submit">Book Now</button>
     </form>
 </section>
 
 <script>
-    // JavaScript to dynamically disable already booked slots
     const dateInput = document.querySelector('[name="reservation_date"]');
-    const slotSelect = document.querySelector('#id_reservation_slot');  // Corrected to use the form's slot select
+    const slotSelect = document.querySelector('#id_reservation_slot');  // The select dropdown for time slots
 
+    // Function to disable already booked slots and populate available ones
+    function updateAvailableSlots(bookedSlots) {
+        // Clear existing options
+        slotSelect.innerHTML = '<option value="" disabled selected>Select a time slot</option>';
+
+        // Define available slots
+        const allSlots = [
+            '12:00', '12:30', '13:00', '13:30', '14:00',
+        ];
+
+        // Loop through all possible slots and add them to the dropdown
+        allSlots.forEach(slot => {
+            const option = document.createElement('option');
+            option.value = slot;
+            option.textContent = slot + " PM";  // Display time slot with AM/PM format
+
+            // Disable the option if it's already booked
+            if (bookedSlots.includes(slot)) {
+                option.disabled = true;
+                option.style.color = 'grey';  // Grey out the booked slots
+            } else {
+                option.disabled = false;
+                option.style.color = 'black';  // Active options
+            }
+
+            slotSelect.appendChild(option);
+        });
+    }
+
+    // Event listener for date change
     dateInput.addEventListener('change', function() {
         const selectedDate = dateInput.value;
 
@@ -29,18 +84,12 @@
             .then(response => response.json())
             .then(data => {
                 const bookedSlots = data.booked_slots;
-
-                // Disable or grey out the booked time slots
-                slotSelect.querySelectorAll('option').forEach(option => {
-                    if (bookedSlots.includes(option.value)) {
-                        option.disabled = true;
-                        option.style.color = 'grey';  // Make grey
-                    } else {
-                        option.disabled = false;
-                        option.style.color = 'black';  // Active options
-                    }
-                });
+                updateAvailableSlots(bookedSlots);
             });
     });
+
+    // Automatically select the current date when the page loads
+    document.querySelector('[name="reservation_date"]').value = new Date().toISOString().split('T')[0];
 </script>
+
 {% endblock %}

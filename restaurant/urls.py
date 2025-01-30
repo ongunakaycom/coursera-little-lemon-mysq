@@ -10,4 +10,5 @@ urlpatterns = [
     path('book/', views.book_table, name='book'),
     path('confirmation/', views.booking_confirmation, name='booking_confirmation'),
     path('api/booked-slots/', views.get_booked_slots, name='get_booked_slots'),
+    path('api/check-availability/', views.check_availability, name='check_availability'),
 ]

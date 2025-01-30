@@ -63,7 +63,6 @@ def book_table(request):
 
     return render(request, 'restaurant/book.html', {'form': form})
 
-
 # Helper function for checking table availability
 
 def get_available_table(reservation_slot, guests):
@@ -81,6 +80,25 @@ def get_available_table(reservation_slot, guests):
 
 # API-related views
 
+# views.py
+
+def check_availability(request):
+    """
+    Checks if the requested time slot is available for a given date.
+    Example request: GET /api/check-availability/?date=2025-01-30&time=12:00
+    """
+    date = request.GET.get('date')
+    time = request.GET.get('time')
+    
+    if not date or not time:
+        return JsonResponse({"error": "Date and time parameters are required."}, status=400)
+
+    # Check if the time slot is already booked for the selected date
+    bookings = Booking.objects.filter(reservation_date=date, reservation_time=time)
+    if bookings.exists():
+        return JsonResponse({"available": False})
+    return JsonResponse({"available": True})
+
 def get_booked_slots(request):
     """
     Returns a list of all booked slots for a specific date.
@@ -91,10 +109,9 @@ def get_booked_slots(request):
         return JsonResponse({"error": "Date parameter is required."}, status=400)
 
     bookings = Booking.objects.filter(reservation_date=date)
-    booked_slots = bookings.values_list('reservation_slot', flat=True)
+    booked_slots = bookings.values_list('reservation_time', flat=True)
 
     return JsonResponse({"booked_slots": list(booked_slots)}, safe=False)
-
 
 # API views using Django REST Framework
 

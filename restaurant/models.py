@@ -31,10 +31,7 @@ class Booking(models.Model):
         verbose_name="Guest Name"
     )
     reservation_date = models.DateField()
-    reservation_slot = models.SmallIntegerField()
- 
-    reservation_time = models.TimeField(verbose_name="Time"
-    )
+    reservation_time = models.TimeField(verbose_name="Time")
     guests = models.PositiveIntegerField(
         default=1,
         verbose_name="Number of Guests"
@@ -55,7 +52,6 @@ class Booking(models.Model):
     def __str__(self):
         return f"{self.first_name} - {self.reservation_date} {self.reservation_time}"
 
-
 class BookingForm(forms.ModelForm):
     TIME_SLOTS = [
         ('12:00', '12:00 PM'),
@@ -63,27 +59,17 @@ class BookingForm(forms.ModelForm):
         ('13:00', '1:00 PM'),
         ('13:30', '1:30 PM'),
         ('14:00', '2:00 PM'),
+        # Add more slots as needed
     ]
 
-    reservation_time = forms.TimeField(
-        widget=forms.Select(choices=TIME_SLOTS),
-        input_formats=['%H:%M']
-    )
+    reservation_time = forms.ChoiceField(
+        choices=TIME_SLOTS, 
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )  # Adding form-control for styling
 
     class Meta:
         model = Booking
-        fields = ['first_name', 'reservation_date', 'reservation_time', 'guests', 'table']
-
-        widgets = {
-            'reservation_date': forms.DateInput(
-                attrs={
-                    'type': 'date',
-                    'class': 'form-control',
-                    'min': timezone.now().date().isoformat()
-                }
-            ),
-            'guests': forms.NumberInput(attrs={'min': 1, 'max': 10}),
-        }
+        fields = ['first_name', 'reservation_date', 'reservation_time', 'guests', 'table']  # Ensure the fields are correct
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -99,8 +85,8 @@ class BookingForm(forms.ModelForm):
             instance.save()
         return instance
 
-
 class MenuItem(models.Model):
+    # Define category choices
     CATEGORY_CHOICES = [
         ('ST', 'Starter'),
         ('MN', 'Main Course'),
@@ -109,17 +95,9 @@ class MenuItem(models.Model):
     ]
 
     name = models.CharField(max_length=255)
-    price = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        validators=[MinValueValidator(0.01)]
-    )
+    price = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.TextField(max_length=1000, blank=True)
-    category = models.CharField(
-        max_length=2,
-        choices=CATEGORY_CHOICES,
-        default='MN'
-    )
+    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default='MN')
     available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
