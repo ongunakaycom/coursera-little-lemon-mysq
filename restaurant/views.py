@@ -14,6 +14,9 @@ def home(request):
     menu_items = MenuItem.objects.all()  # Retrieve all menu items
     return render(request, "restaurant/home.html", {"menu_items": menu_items})
 
+def about(request):
+    return render(request, "restaurant/about.html")
+
 def menu(request):
     menu_data = MenuItem.objects.all()  # Query all menu items
     return render(request, 'restaurant/menu.html', {"menu": menu_data})
@@ -21,6 +24,9 @@ def menu(request):
 def menu_item(request, pk):
     menu_item = get_object_or_404(MenuItem, pk=pk)
     return render(request, 'restaurant/menu_item.html', {'menu_item': menu_item})
+
+def reservations(request):
+    return render(request, "restaurant/reservations.html")
 
 # Custom permission for admin-only write operations
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -54,5 +60,4 @@ class BookingView(generics.ListCreateAPIView):
             if self.request.user.is_superuser
             else models.Booking.objects.filter(user=self.request.user)
         )
-
 

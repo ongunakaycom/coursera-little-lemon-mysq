@@ -1,125 +1,15 @@
-<!-- restaurant/templates/restaurant/home.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Little Lemon Restaurant</title>
-    <style>
-        /* Basic Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+{% extends 'restaurant/base.html' %}
 
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #f8b400;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            z-index: 1000;
-        }
+{% block content %}
+    <section>
+        <h2>Welcome to Little Lemon Restaurant!</h2>
+        <p>Explore our delicious menu and make a reservation today.</p>
+    </section>
 
-        header h1 {
-            margin: 0;
-        }
-
-        /* Content */
-        main {
-            margin-top: 80px; /* Space for the fixed header */
-            padding: 20px;
-            text-align: center;
-        }
-
-        section {
-            margin-top: 40px;
-        }
-
-        h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        .menu-item {
-            background-color: #f2f2f2;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-            width: 300px;
-            margin: 0 auto;
-        }
-
-        .menu-item h3 {
-            margin-top: 0;
-            color: #f8b400;
-        }
-
-        .menu-item p {
-            font-size: 1.1em;
-        }
-
-        .price {
-            font-size: 1.5em;
-            color: #333;
-            font-weight: bold;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        }
-
-    </style>
-</head>
-<body>
-
-    <!-- Header -->
-    <header>
-        <h1>Little Lemon Restaurant</h1>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <section>
-            <h2>Welcome to Little Lemon Restaurant!</h2>
-            <p>Explore our delicious menu and make a reservation today.</p>
-        </section>
-
-        <!-- Menu Section -->
-        <section>
-            <h2>Our Menu</h2>
-
-            <!-- Dynamically Render Menu Items -->
-            {% for item in menu_items %}
-            <div class="menu-item">
-                <h3>{{ item.name }}</h3>
-                <p>{{ item.description }}</p>
-                <p class="price">${{ item.price }}</p>
-            </div>
-            {% empty %}
-            <p>No menu items available at the moment.</p>
-            {% endfor %}
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Little Lemon Restaurant</p>
-    </footer>
-
-</body>
-</html>
+    <!-- Additional Home Page Content -->
+    <section>
+        <h2>Featured Dishes</h2>
+        <p>Check out our special dishes this month!</p>
+        <!-- You can dynamically add content here -->
+    </section>
+{% endblock %}
