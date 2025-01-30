@@ -1,0 +1,18 @@
+<!-- restaurant/templates/restaurant/book.html -->
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Book a Table - Little Lemon Restaurant{% endblock %}
+
+{% block content %}
+    <section class="booking-section">
+        <h2 class="booking-title">Book a Table</h2>
+        <p class="booking-text">Fill out the form below to reserve a table at Little Lemon Restaurant.</p>
+
+        <!-- Booking Form -->
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- This will render the form fields (first name, date, slot, etc.) -->
+            <button type="submit">Book Now</button>
+        </form>
+    </section>
+{% endblock %}

@@ -5,8 +5,15 @@
 
 {% block content %}
     <section class="reservation-section">
-        <h2 class="reservation-title">Make a Reservation</h2>
-        <p class="reservation-text">Use this section to make a reservation at Little Lemon Restaurant.</p>
-        <!-- Add more content as needed -->
+        <h2 class="reservation-title">Upcoming Reservations</h2>
+        {% if bookings %}
+            <ul>
+                {% for booking in bookings %}
+                    <li>{{ booking.first_name }} - Table {{ booking.table }} on {{ booking.reservation_date }} at {{ booking.reservation_slot }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No bookings available for the selected date.</p>
+        {% endif %}
     </section>
 {% endblock %}

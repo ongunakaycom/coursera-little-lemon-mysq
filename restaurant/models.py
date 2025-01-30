@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django import forms
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -16,6 +17,12 @@ class Booking(models.Model):
     def __str__(self):
         return f"{self.first_name} - Table {self.table} on {self.reservation_date} at {self.reservation_slot}"
 
+# Form for creating bookings
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ['first_name', 'reservation_date', 'reservation_slot', 'guests', 'table']
+
 class MenuItem(models.Model):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -24,4 +31,3 @@ class MenuItem(models.Model):
 
     def __str__(self):
         return self.name
-

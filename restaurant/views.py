@@ -26,7 +26,8 @@ def menu_item(request, pk):
     return render(request, 'restaurant/menu_item.html', {'menu_item': menu_item})
 
 def reservations(request):
-    return render(request, "restaurant/reservations.html")
+    bookings = models.Booking.objects.all()  # Get all bookings (or filter based on user)
+    return render(request, "restaurant/reservations.html", {"bookings": bookings})
 
 # Custom permission for admin-only write operations
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -61,3 +62,12 @@ class BookingView(generics.ListCreateAPIView):
             else models.Booking.objects.filter(user=self.request.user)
         )
 
+    def perform_create(self, serializer):
+        reservation_date = serializer.validated_data['reservation_date']
+        reservation_slot = serializer.validated_data['reservation_slot']
+        
+        # Check if the slot is already taken for the date
+        if models.Booking.objects.filter(reservation_date=reservation_date, reservation_slot=reservation_slot).exists():
+            raise serializers.ValidationError("This slot is already booked.")
+        
+        serializer.save(user=self.request.user)
