@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-mysqlclient = "*"
 python-dotenv = "*"
 django-environ = "*"
 psycopg2-binary = "*"
 django = "*"
 djangorestframework = "*"
 djoser = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
