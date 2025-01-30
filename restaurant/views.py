@@ -10,8 +10,7 @@ from . import serializers
 # Views for general pages
 
 def home(request):
-    menu_items = MenuItem.objects.filter(available=True)  # Filter available items
-    print(menu_items)  # Debug: Print the queryset to confirm it's not empty
+    menu_items = MenuItem.objects.filter(available=True)
     return render(request, "restaurant/home.html", {"menu_items": menu_items})
 
 def about(request):
@@ -26,10 +25,9 @@ def menu_item(request, pk):
     return render(request, 'restaurant/menu_item.html', {'menu_item': menu_item})
 
 
-# Reservation-related views
-
+# Reservation Views
 def reservations(request):
-    bookings = Booking.objects.all()  # Add filtering logic for user if needed
+    bookings = Booking.objects.all()
     return render(request, "restaurant/reservations.html", {"bookings": bookings})
 
 def booking_confirmation(request):
@@ -38,29 +36,18 @@ def booking_confirmation(request):
 
 def book_table(request):
     if request.method == 'POST':
-        form = BookingForm(request.POST)
+        form = BookingForm(request.POST, user=request.user)
         if form.is_valid():
             reservation_date = form.cleaned_data['reservation_date']
-            reservation_slot = form.cleaned_data['reservation_slot']
-            guests = form.cleaned_data['guests']
+            reservation_time = form.cleaned_data['reservation_time']
 
-            try:
-                # Try to assign a table based on the reservation slot and number of guests
-                table = get_available_table(reservation_slot, guests)
-                form.instance.table = table
-            except ValidationError as e:
-                form.add_error('guests', str(e))
-                return render(request, 'restaurant/book.html', {'form': form})
-
-            # Check if the slot is already booked
-            if Booking.objects.filter(reservation_date=reservation_date, reservation_slot=reservation_slot).exists():
-                form.add_error('reservation_slot', 'This time slot is already booked.')
+            if Booking.objects.filter(reservation_date=reservation_date, reservation_time=reservation_time).exists():
+                form.add_error('reservation_time', 'This time slot is already booked.')
             else:
                 form.save()
                 return redirect('booking_confirmation')
-
     else:
-        form = BookingForm()
+        form = BookingForm(user=request.user)
 
     return render(request, 'restaurant/book.html', {'form': form})
 
@@ -84,38 +71,27 @@ def get_available_table(reservation_slot, guests):
 # views.py
 
 def check_availability(request):
-    """
-    Checks if the requested time slot is available for a given date.
-    Example request: GET /api/check-availability/?date=2025-01-30&time=12:00
-    """
+    """Check if a time slot is available for a given date."""
     date = request.GET.get('date')
     time = request.GET.get('time')
     
     if not date or not time:
         return JsonResponse({"error": "Date and time parameters are required."}, status=400)
 
-    # Check if the time slot is already booked for the selected date
-    bookings = Booking.objects.filter(reservation_date=date, reservation_time=time)
-    if bookings.exists():
+    if Booking.objects.filter(reservation_date=date, reservation_time=time).exists():
         return JsonResponse({"available": False})
     return JsonResponse({"available": True})
 
 def get_booked_slots(request):
-    """
-    Returns a list of all booked slots for a specific date.
-    Example request: GET /api/booked-slots/?date=2025-01-30
-    """
+    """Get all booked slots for a specific date."""
     date = request.GET.get('date')
     if not date:
         return JsonResponse({"error": "Date parameter is required."}, status=400)
 
-    bookings = Booking.objects.filter(reservation_date=date)
-    booked_slots = bookings.values_list('reservation_time', flat=True)
-
+    booked_slots = Booking.objects.filter(reservation_date=date).values_list('reservation_time', flat=True)
     return JsonResponse({"booked_slots": list(booked_slots)}, safe=False)
 
-# API views using Django REST Framework
-
+# DRF Views
 class MenuItemView(generics.ListCreateAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = serializers.MenuItemSerializer
@@ -142,13 +118,11 @@ class BookingView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         reservation_date = serializer.validated_data['reservation_date']
-        reservation_slot = serializer.validated_data['reservation_slot']
+        reservation_time = serializer.validated_data['reservation_time']
 
-        if Booking.objects.filter(reservation_date=reservation_date, reservation_slot=reservation_slot).exists():
+        if Booking.objects.filter(reservation_date=reservation_date, reservation_time=reservation_time).exists():
             raise ValidationError("This slot is already booked.")
-
         serializer.save(user=self.request.user)
-
 
 # Custom permissions for admin-only operations
 

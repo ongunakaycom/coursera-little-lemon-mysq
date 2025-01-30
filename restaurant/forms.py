@@ -16,7 +16,7 @@ class BookingForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = ['first_name', 'reservation_date', 'reservation_time', 'guests', 'table']  # Updated field name
+        fields = ['first_name', 'reservation_date', 'reservation_time', 'guests', 'table']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)

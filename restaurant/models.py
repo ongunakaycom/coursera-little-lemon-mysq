@@ -5,7 +5,7 @@ from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator  # Add this import
 
 class Table(models.Model):
-    """Represents a restaurant table with its capacity"""
+    """Represents a restaurant table with its capacity."""
     number = models.IntegerField(unique=True)
     seats = models.IntegerField()
 
@@ -15,33 +15,22 @@ class Table(models.Model):
     def __str__(self):
         return f"Table {self.number} ({self.seats} seats)"
 
-
 class Booking(models.Model):
-    """Represents a restaurant booking/reservation"""
-    user = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='bookings'
-    )
-    first_name = models.CharField(
-        max_length=100,
-        default="Guest",
-        verbose_name="Guest Name"
-    )
+    """Represents a restaurant booking/reservation."""
+    TIME_SLOTS = [
+        ('12:00', '12:00 PM'),
+        ('12:30', '12:30 PM'),
+        ('13:00', '1:00 PM'),
+        ('13:30', '1:30 PM'),
+        ('14:00', '2:00 PM'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='bookings')
+    first_name = models.CharField(max_length=100, default="Guest", verbose_name="Guest Name")
     reservation_date = models.DateField()
-    reservation_time = models.TimeField(verbose_name="Time")
-    guests = models.PositiveIntegerField(
-        default=1,
-        verbose_name="Number of Guests"
-    )
-    table = models.ForeignKey(
-        Table,
-        on_delete=models.CASCADE,
-        related_name='bookings',
-        verbose_name="Table Number"
-    )
+    reservation_time = models.CharField(max_length=5, choices=TIME_SLOTS, verbose_name="Time Slot")
+    guests = models.PositiveIntegerField(default=1, verbose_name="Number of Guests")
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='bookings', verbose_name="Table Number")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -86,7 +75,7 @@ class BookingForm(forms.ModelForm):
         return instance
 
 class MenuItem(models.Model):
-    # Define category choices
+    """Represents a menu item in the restaurant."""
     CATEGORY_CHOICES = [
         ('ST', 'Starter'),
         ('MN', 'Main Course'),
