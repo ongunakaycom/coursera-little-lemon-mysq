@@ -1,9 +1,12 @@
+# restaurant/urls.py
 from django.urls import path
 from . import views
 
+app_name = 'restaurant'  # Namespace for the app
+
 urlpatterns = [
     path('', views.home, name='home'),
-    path('about/', views.about, name='about'),
+    path('about/', views.about, name='about'),  # Correctly defined
     path('menu/', views.menu, name='menu'),
     path('menu/<int:pk>/', views.menu_item, name='menu_item'),
     path('reservations/', views.reservations, name='reservations'),

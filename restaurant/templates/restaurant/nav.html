@@ -1,8 +1,8 @@
-<!-- restaurant/templates/nav.html -->
+<!-- restaurant/templates/restaurant/nav.html -->
 <nav>
-    <a href="{% url 'home' %}">Home</a>
-    <a href="{% url 'about' %}">About</a>
-    <a href="{% url 'menu' %}">Menu</a>
-    <a href="{% url 'reservations' %}">Reservations</a>
-    <a href="{% url 'book' %}">Book</a> <!-- Add this link pointing to the 'book' page -->
+    <a href="{% url 'restaurant:home' %}">Home</a>
+    <a href="{% url 'restaurant:about' %}">About</a>  <!-- Use the namespace -->
+    <a href="{% url 'restaurant:menu' %}">Menu</a>
+    <a href="{% url 'restaurant:reservations' %}">Reservations</a>
+    <a href="{% url 'restaurant:book' %}">Book</a>
 </nav>

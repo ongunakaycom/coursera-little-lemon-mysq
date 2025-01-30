@@ -5,6 +5,7 @@ from rest_framework.exceptions import ValidationError
 from .models import MenuItem, Table, Booking
 from .forms import BookingForm
 from . import serializers
+from django.contrib import messages
 
 
 # Views for general pages
@@ -36,19 +37,18 @@ def booking_confirmation(request):
 
 def book_table(request):
     if request.method == 'POST':
-        form = BookingForm(request.POST, user=request.user)
+        form = BookingForm(request.POST)
         if form.is_valid():
-            reservation_date = form.cleaned_data['reservation_date']
-            reservation_time = form.cleaned_data['reservation_time']
-
-            if Booking.objects.filter(reservation_date=reservation_date, reservation_time=reservation_time).exists():
-                form.add_error('reservation_time', 'This time slot is already booked.')
-            else:
-                form.save()
-                return redirect('booking_confirmation')
+            # Process the booking
+            form.save()
+            messages.success(request, 'Your table has been booked successfully!')
+        else:
+            messages.error(request, 'There was an error with your booking.')
+        return redirect('restaurant:book')  # Adjust the redirect URL to match your URL name
+    
     else:
-        form = BookingForm(user=request.user)
-
+        form = BookingForm()
+    
     return render(request, 'restaurant/book.html', {'form': form})
 
 # Helper function for checking table availability
