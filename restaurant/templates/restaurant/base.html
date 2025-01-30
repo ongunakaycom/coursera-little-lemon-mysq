@@ -1,4 +1,4 @@
-<!-- restaurant/templates/base.html -->
+<!-- base.html -->
 {% load static %}
 
 <!DOCTYPE html>
@@ -14,19 +14,14 @@
     <!-- Header -->
     <header>
         <h1>Little Lemon Restaurant</h1>
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'about' %}">About</a>
-            <a href="{% url 'menu' %}">Menu</a>
-            <a href="{% url 'reservations' %}">Reservations</a>
-        </nav>
+
+        <!-- Include Navigation from nav.html (corrected path) -->
+        {% include 'restaurant/nav.html' %}
     </header>
 
     <!-- Main Content -->
     <main>
-        {% block content %}
-        <!-- This is where page-specific content will go -->
-        {% endblock %}
+        {% block content %} <!-- This is where page-specific content will go --> {% endblock %}
     </main>
 
     <!-- Footer -->

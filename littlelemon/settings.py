@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from django.core.management.utils import get_random_secret_key
 
@@ -53,7 +54,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'restaurant/templates'),  # Add this line
+            os.path.join(BASE_DIR, 'restaurant', 'templates'),  # This points to the templates directory
         ],
         'APP_DIRS': True,
         'OPTIONS': {

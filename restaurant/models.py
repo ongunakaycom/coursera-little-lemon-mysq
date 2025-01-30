@@ -1,17 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100, default="Guest")  # Add default
+    reservation_date = models.DateField(default=timezone.now)
+    reservation_slot = models.TimeField()
     guests = models.IntegerField()
     table = models.IntegerField()
-    date = models.DateTimeField()
 
     class Meta:
-        app_label = 'restaurant'  # Explicitly declare app_label
+        unique_together = ('reservation_date', 'reservation_slot')
 
     def __str__(self):
-        return f"{self.user.first_name}, {self.table}: {self.date}"
+        return f"{self.first_name} - Table {self.table} on {self.reservation_date} at {self.reservation_slot}"
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=255)
