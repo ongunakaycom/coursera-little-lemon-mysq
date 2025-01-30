@@ -1,26 +1,12 @@
 <!-- restaurant/templates/restaurant/about.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Little Lemon Restaurant</title>
-</head>
-<body>
-    <header>
-        <h1>About Little Lemon Restaurant</h1>
-    </header>
+{% extends 'restaurant/base.html' %}
 
-    <main>
-        <section>
-            <h2>Welcome to Little Lemon!</h2>
-            <p>We are a family-owned restaurant serving delicious and fresh food.</p>
-            <!-- Add more content as needed -->
-        </section>
-    </main>
+{% block title %}About Us - Little Lemon Restaurant{% endblock %}
 
-    <footer>
-        <p>&copy; 2025 Little Lemon Restaurant</p>
-    </footer>
-</body>
-</html>
+{% block content %}
+    <section>
+        <h2>Welcome to Little Lemon!</h2>
+        <p>We are a family-owned restaurant serving delicious and fresh food.</p>
+        <!-- Add more content as needed -->
+    </section>
+{% endblock %}

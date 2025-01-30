@@ -1,255 +1,130 @@
+/* static/css/styles.css */
+
+/* Basic Styles */
 body {
-    font-family: 'Karla', sans-serif;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    margin-left: 5%;
-    margin-right: 5%;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Markazi Text', serif;
-    letter-spacing: 2px;;
-}
-
-h1 {
-    font-size: 4rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0;
-}
-
-h2 {
-    font-size: 2.5rem;
-    color: #333333;
-    margin:1rem 0;
-}
-
-p, ul{
-    font-size: 1.25rem;;
-}
-
-a {
-    color: #EE9972;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-header img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 100%;
-    height: auto;
-}
-
-
-nav {
-    background-color: #495E57;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-bottom: 0px;
-}
-
-nav ul {
-    list-style: none;
-    font-size: 1.5rem;
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8b400;
+    color: white;
+    padding: 15px 0;
     text-align: center;
-    padding-inline-start: 0rem;
-    margin-bottom: 0px;
+    z-index: 1000;
 }
 
-nav ul li {
-    display: inline-block;
-    margin: 0.5rem;
-}
-
-nav ul a {
-    color: #EDEFEE;
-    text-decoration: none;
-}
-
-nav ul a:active {
-    text-decoration: underline;
-}
-
-nav ul a:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 0.1rem;
-}
-
-section {
-    display: flex;
-    gap: 2rem 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    flex-direction: row;
-}
-
-article {
-    flex:1;
-}
-
-article img {
-    max-width: 100%;
-}
-
-article ul {
-    list-style: none;
-}
-
-main article {
-    border: 1px solid #EDEFEE;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-figure {
+header h1 {
     margin: 0;
 }
 
-label {
-    font-weight: bold;
-    display: block;
-  }
-
-input{
-    width: 80%;
-    display: block;
-    padding: .5rem 1rem;
-    line-height: 1.5rem;
-    box-sizing: border-box;
+/* Navigation Bar */
+nav {
+    text-align: center;
+    margin-top: 10px;
 }
 
-#button {
-    padding: .5rem 1rem;
-    border: 1px solid #495E57;
-    background-color:#495E57;;
-    border-radius: 5px;
-    width: 80%;
-    font-size: 1.25rem;
-    display: block;
-    color: #fff;
-    line-height: 25px;
-  }
-
-#hero {
-    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), url('../img/restaurant_inside.jpg');
-    background-size: cover;
-    background-position: 75%;
+nav a {
     color: white;
-    min-height: 200px;
-    text-align: center;;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 15px;
+    font-size: 1.2em;
 }
 
-#hero p {
-    font-size: 2rem;
-    margin:0;
-    text-shadow: 2px 2px 4px #333333;
+nav a:hover {
+    background-color: #333;
+    color: #fff;
 }
 
-.cta { 
-    display: inline-block; 
-    color: rgba(255, 255, 255, 0.9);
-    width: 200px; 
-    font-weight: bold; 
-    font-size: 1.5rem;
-    padding: 8px; 
-    border: 3px solid #fff; 
-    text-align: center; 
-    outline: none; 
-    text-decoration: none; 
-    margin: 1rem;
-} 
+/* Content */
 
-.cta:hover {
-    color:#fff;
-    background:#495E57;
-    border: 3px solid #495E57; 
-  }
-
-  .heading-shadow {
-    text-shadow: 1px 1px 4px #333333;
-  }
-
-footer {
-    background-color: #EDEFEE;
-    padding: 1rem;
+/* Flex container for the reservation section */
+.reservation-section {
     display: flex;
-    gap: 2rem 1rem;
+    flex-direction: column;  /* Stacks items vertically */
+    align-items: center;     /* Centers content horizontally */
+    justify-content: center; /* Centers content vertically (optional) */
+    gap: 20px;               /* Adds space between elements */
+    padding: 40px;           /* Adds padding around the content */
+    max-width: 900px;        /* Optional: Limit the max width of the section */
+    margin: 0 auto;          /* Centers the section in the container */
+}
+/* Style for the reservation title */
+.reservation-title {
+    font-size: 2rem; /* Sets the font size for the title */
+    text-align: center; /* Centers the text */
+    color: #333; /* Text color */
+    margin-bottom: 10px; /* Adds space below the title */
 }
 
-footer img {
-    max-width: 50%;
+/* Style for the reservation description text */
+.reservation-text {
+    font-size: 1.2rem; /* Sets the font size for the paragraph */
+    text-align: center; /* Centers the paragraph text */
+    color: #666; /* Lighter text color */
+    max-width: 600px; /* Optional: limits the width of the text */
 }
 
-footer p {
-    border-top: #333333;
-    border-style: solid;
-    border-width: 0.1rem;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    text-align: right;
-    padding-top: 1rem;;
+main {
+    margin-top: 80px; /* Space for the fixed header */
+    padding: 20px;
+    text-align: center;
 }
 
-.row {
-    display: flex;
-    flex-direction: row;
+/* Full-width section styling */
+.full-width-section {
     width: 100%;
-    padding-bottom: 1rem;
-  }
-
-  .column {
-    flex-basis: 50%;
+    margin-top: 1rem;
     margin-bottom: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .column figure {
-    padding: 0px 12px;
-
-  }
-
-
-  .videowrap {
-	position: relative;
-	padding-bottom: 56.25%; /* 16:9 */
-	padding-top: 1rem;
-	height: 0;
-}
-.videowrap iframe {
-	position: absolute;
-    margin-top: 2rem;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+    padding: 20px;
 }
 
-.menu-price{
-    display: block;
-    font-size: 1rem;
+h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
 }
 
-@media (max-width: 800px) {
-    section {
-        flex-direction: column;   
-    }
+.menu-item {
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+    width: 300px;
+    margin: 0 auto;
+}
 
-    .row {
-        flex-direction: column;
-        width: 100%;
-      }
-   
-    input{
-        width: 100%;
-    }
+.menu-item h3 {
+    margin-top: 0;
+    color: #f8b400;
+}
 
-    #button{
-        width: 100%;
-    }
-  }
+.menu-item p {
+    font-size: 1.1em;
+}
+
+.price {
+    font-size: 1.5em;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+

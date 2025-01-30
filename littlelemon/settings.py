@@ -17,10 +17,12 @@ DEBUG = True
 # Allowed hosts for the project
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
-# Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# For development, these are generally not needed, but if you're in production, you need:
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # For development (if you have additional directories for static files)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For production
+
 
 # Installed apps (organizing them into categories)
 INSTALLED_APPS = [
