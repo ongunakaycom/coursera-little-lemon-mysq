@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ menu_item.name }} - Little Lemon Restaurant</title>
+    {% load static %}
+    {% load custom_filters %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffcc00;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .column {
+            text-align: center;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .menu-price {
+            color: #ff9900;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        footer {
+            background-color: #ffcc00;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Little Lemon Restaurant
+    </header>
+    <div class="container">
+        <h1>{{ menu_item.name }}</h1>
+        <p>{{ menu_item.description }}</p>
+        <div class="column">
+            <img src="{% static 'img/menu_items/greek salad.jpg' %}" alt="{{ menu_item.name }}" />
+        </div>
+        <p class="menu-price">${{ menu_item.price|floatformat:2 }}</p>
+    </div>
+    <footer>
+        Copyright Little Lemon Restaurant
+    </footer>
+</body>
+</html>

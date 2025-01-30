@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Little Lemon Restaurant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffcc00;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            text-align: center;
+            color: #666;
+        }
+        nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav li {
+            display: inline;
+            margin: 0 10px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #ff9900;
+            font-weight: bold;
+        }
+        .menu-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .menu-item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            width: calc(33.333% - 20px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .menu-item h3 {
+            color: #ff9900;
+        }
+        .menu-price {
+            color: #ff9900;
+        }
+        footer {
+            background-color: #ffcc00;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Little Lemon Restaurant
+    </header>
+    <div class="container">
+        <h1>Welcome to Little Lemon Restaurant!</h1>
+        <p>Explore our delicious menu and make a reservation today.</p>
+
+        <h2>Main Menu</h2>
+        <nav>
+            <ul>
+                <li><a href="{% url 'menu' %}">View Menu</a></li>  <!-- Clickable link to the menu page -->
+                <!-- Add other navigation links as needed -->
+            </ul>
+        </nav>
+
+        <h2>Our Menu</h2>
+        <div class="menu-list">
+            {% for item in menu_items %}
+            <div class="menu-item">
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.description }}</p>
+                <span class="menu-price">${{ item.price }}.00</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        Copyright Little Lemon Restaurant
+    </footer>
+</body>
+</html>

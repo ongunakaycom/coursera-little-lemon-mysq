@@ -1,0 +1,17 @@
+### Superuser Credentials:
+Username: admin
+Email: admin@admin.com
+Password: admin123
+
+### Manager Credentials:
+Username: manager1
+Password: managerpass123
+
+### Delivery Crew Credentials:
+Username: delivery1
+Password: deliverypass123
+
+### Customer Credentials:
+Username: customer1
+Password: customerpass123
+

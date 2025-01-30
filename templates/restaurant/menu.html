@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu - Little Lemon Restaurant</title>
+    {% load static %}
+    {% load custom_filters %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffcc00;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .menu-section {
+            margin: 20px 0;
+        }
+        .menu-section h2 {
+            color: #ffcc00;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .menu-item p {
+            margin: 0;
+        }
+        .menu-price {
+            color: #ff9900;
+        }
+        footer {
+            background-color: #ffcc00;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Little Lemon Restaurant
+    </header>
+    <div class="container">
+        <h1>Our Menu</h1>
+        
+        <div class="menu-section">
+            <h2>Starters</h2>
+            {% for item in menu %}
+            {% if item.category == "Starter" %}
+            <div class="menu-item">
+                <p>
+                    <a href="{% url 'menu_item' pk=item.pk %}">
+                        {{ item.name }}
+                    </a>
+                    <span class="menu-price">
+                        ${{ item.price|format_price }}
+                    </span>
+                </p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        
+        <div class="menu-section">
+            <h2>Main</h2>
+            {% for item in menu %}
+            {% if item.category == "Main" %}
+            <div class="menu-item">
+                <p>
+                    <a href="{% url 'menu_item' pk=item.pk %}">
+                        {{ item.name }}
+                    </a>
+                    <span class="menu-price">
+                        ${{ item.price|format_price }}
+                    </span>
+                </p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        
+        <div class="menu-section">
+            <h2>Desserts</h2>
+            {% for item in menu %}
+            {% if item.category == "Dessert" %}
+            <div class="menu-item">
+                <p>
+                    <a href="{% url 'menu_item' pk=item.pk %}">
+                        {{ item.name }}
+                    </a>
+                    <span class="menu-price">
+                        ${{ item.price|format_price }}
+                    </span>
+                </p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        Copyright Little Lemon Restaurant
+    </footer>
+</body>
+</html>
