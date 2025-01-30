@@ -25,9 +25,9 @@ class BookingForm(forms.ModelForm):
             self.fields['first_name'].initial = self.user.get_full_name()
 
     def save(self, commit=True):
-        instance = super().save(commit=False)
-        if self.user and self.user.is_authenticated:
-            instance.user = self.user
+        instance = super().save(commit=False)  # Get the form instance without saving yet
+        if self.user and self.user.is_authenticated:  # Check if the user is authenticated
+            instance.user = self.user  # Assign the user to the booking
         if commit:
-            instance.save()
+            instance.save()  # Save the instance to the database
         return instance

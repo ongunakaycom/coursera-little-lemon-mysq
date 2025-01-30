@@ -48,7 +48,6 @@ class BookingForm(forms.ModelForm):
         ('13:00', '1:00 PM'),
         ('13:30', '1:30 PM'),
         ('14:00', '2:00 PM'),
-        # Add more slots as needed
     ]
 
     reservation_time = forms.ChoiceField(

@@ -56,6 +56,12 @@
                     <input type="text" id="id_reservation_slot" name="reservation_slot" class="form-control flatpickr-time" placeholder="Select a time slot" readonly>
                 </div>
 
+                <!-- Table Selector -->
+                <div class="form-group mb-3 text-start">
+                    <label for="id_table" class="form-label">Select Table:</label>
+                    {{ form.table }} <!-- Ensure the table field is rendered here -->
+                </div>
+
                 <!-- Submit Button -->
                 <div class="d-grid text-start">
                     <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
