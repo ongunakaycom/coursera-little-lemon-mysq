@@ -1,3 +1,4 @@
+# F:\HDD\GitHub\coursera-little-lemon-mysql\restaurant\views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from rest_framework import generics, permissions

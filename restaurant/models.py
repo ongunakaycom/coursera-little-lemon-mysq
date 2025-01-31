@@ -1,3 +1,4 @@
+# F:\HDD\GitHub\coursera-little-lemon-mysql\restaurant\models.py
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
