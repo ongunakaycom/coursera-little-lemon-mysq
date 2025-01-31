@@ -65,9 +65,9 @@ nav a:hover {
 /* Booking Section */
 .booking-section {
     flex-grow: 1;
-    padding: 40px 0;
+    padding: 60px 0; /* Increased padding for more space */
     text-align: center;
-    max-width: 900px;
+    max-width: 100%; /* Allow it to take up the full width */
     margin: 0 auto;
 }
 
@@ -81,7 +81,7 @@ nav a:hover {
 
 #booking-form {
     width: 100%;
-    max-width: 600px;
+    max-width: 900px; /* Increased the maximum width */
     padding: 30px;
     background-color: #f8f9fa;
     border-radius: 8px;
