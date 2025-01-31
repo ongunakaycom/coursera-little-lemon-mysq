@@ -20,11 +20,13 @@ html, body {
 /* Main Content */
 main {
     flex-grow: 1;
-    padding: 20px;
+    padding: 40px 20px; /* Increased padding */
     text-align: center;
     overflow-y: auto;
     margin-top: 80px;  /* Space for fixed header */
+    width: 100%; /* Full width */
 }
+
 
 /* Header */
 header {
@@ -86,6 +88,12 @@ nav a:hover {
     background-color: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#id_reservation_date {
+    width: 100%; /* Full width for the date input */
+    padding: 15px; /* More padding for a larger feel */
+    font-size: 1.2rem; /* Larger font size */
 }
 
 /* Reservation Section */
@@ -167,10 +175,10 @@ footer {
 
 /* Adjust height and padding for the Time Slot picker */
 .custom-time-slot input {
-    height: 50px; /* Increase input height for better visibility */
-    padding: 15px; /* Add more padding inside the input field */
+    height: 60px; /* Increased height for better visibility */
+    padding: 20px; /* Add more padding inside the input field */
+    font-size: 1.2rem; /* Larger font size */
 }
-
 /* Footer will not overlap anymore, add padding at the bottom */
 body {
     display: flex;
@@ -180,8 +188,4 @@ body {
 
 footer {
     margin-top: auto; /* Ensure footer stays at the bottom */
-}
-
-main {
-    flex: 1; /* Ensures main content takes the remaining space */
 }
