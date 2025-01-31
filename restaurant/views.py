@@ -44,11 +44,13 @@ def book_table(request):
     if request.method == 'POST':
         form = BookingForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
+            booking = form.save()
+            print(f"Booking saved: {booking}")  # Debugging output
             messages.success(request, 'Your table has been booked successfully!')
             return redirect('restaurant:booking_confirmation')
         else:
-            messages.error(request, 'There were some errors in your form submission. Please check the details and try again.')
+            print("Form errors:", form.errors)  # Debugging output
+            messages.error(request, 'There were some errors in your form submission.')
     else:
         form = BookingForm(user=request.user)
 

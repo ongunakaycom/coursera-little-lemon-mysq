@@ -1,29 +1,61 @@
-# F:\HDD\GitHub\coursera-little-lemon-mysql\restaurant\models.py
+# HDD\GitHub\coursera-little-lemon-mysql\restaurant\models.py
+
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
-from django import forms
-from django.core.validators import MinValueValidator, MaxValueValidator  # Add this import
+from datetime import time, datetime, timedelta
+from django.core.validators import MinValueValidator, MaxValueValidator
 
+
+# Table model
 class Table(models.Model):
-    """Represents a restaurant table with its capacity."""
-    number = models.IntegerField(unique=True)
+    number = models.IntegerField()
     seats = models.IntegerField()
-
-    class Meta:
-        ordering = ['number']
 
     def __str__(self):
         return f"Table {self.number} ({self.seats} seats)"
 
+# MenuItem model
+class MenuItem(models.Model):
+    CATEGORY_CHOICES = [
+        ('ST', 'Starter'),
+        ('MN', 'Main Course'),
+        ('DS', 'Dessert'),
+        ('BE', 'Beverage'),
+    ]
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    description = models.TextField(max_length=1000, blank=True)
+    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default='MN')
+    available = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['category', 'name']
+        verbose_name = "Menu Item"
+        verbose_name_plural = "Menu Items"
+
+    def __str__(self):
+        return f"{self.get_category_display()}: {self.name}"
+
+
+# Booking model
 class Booking(models.Model):
     """Represents a restaurant booking/reservation."""
     TIME_SLOTS = [
+        ('10:00', '10:00 AM'),
+        ('10:30', '10:30 AM'),
+        ('11:00', '11:00 AM'),
+        ('11:30', '11:30 AM'),
         ('12:00', '12:00 PM'),
         ('12:30', '12:30 PM'),
         ('13:00', '1:00 PM'),
         ('13:30', '1:30 PM'),
         ('14:00', '2:00 PM'),
+        ('14:30', '2:30 PM'),
+        ('15:00', '3:00 PM'),
+        ('18:30', '6:30 PM'),
+        ('21:30', '9:30 PM'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='bookings')
@@ -42,59 +74,25 @@ class Booking(models.Model):
     def __str__(self):
         return f"{self.first_name} - {self.reservation_date} {self.reservation_time}"
 
-class BookingForm(forms.ModelForm):
-    TIME_SLOTS = [
-        ('12:00', '12:00 PM'),
-        ('12:30', '12:30 PM'),
-        ('13:00', '1:00 PM'),
-        ('13:30', '1:30 PM'),
-        ('14:00', '2:00 PM'),
-    ]
 
-    reservation_time = forms.ChoiceField(
-        choices=TIME_SLOTS, 
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )  # Adding form-control for styling
+# Helper function to generate dynamic time slots
+def generate_time_slots(start_time, end_time, interval=30):
+    """Generate available time slots within restaurant hours."""
+    slots = []
+    current_time = start_time
+    while current_time < end_time:
+        formatted_time = current_time.strftime("%H:%M")  # e.g., "10:00"
+        display_time = current_time.strftime("%I:%M %p")  # e.g., "10:00 AM"
+        slots.append((formatted_time, display_time))
+        current_time = (datetime.combine(datetime.today(), current_time) + timedelta(minutes=interval)).time()
+    return slots
 
-    class Meta:
-        model = Booking
-        fields = ['first_name', 'reservation_date', 'reservation_time', 'guests', 'table']  # Ensure the fields are correct
 
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        if self.user and self.user.is_authenticated:
-            self.fields['first_name'].initial = self.user.get_full_name()
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if self.user and self.user.is_authenticated:
-            instance.user = self.user
-        if commit:
-            instance.save()
-        return instance
-
-class MenuItem(models.Model):
-    """Represents a menu item in the restaurant."""
-    CATEGORY_CHOICES = [
-        ('ST', 'Starter'),
-        ('MN', 'Main Course'),
-        ('DS', 'Dessert'),
-        ('BE', 'Beverage'),
-    ]
-
-    name = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    description = models.TextField(max_length=1000, blank=True)
-    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default='MN')
-    available = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ['category', 'name']
-        verbose_name = "Menu Item"
-        verbose_name_plural = "Menu Items"
+# Reservation model
+class Reservation(models.Model):
+    reservation_time = models.TimeField()
+    reservation_date = models.DateField()
+    guests = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.get_category_display()}: {self.name}"
+        return f"Reservation for {self.reservation_date} at {self.reservation_time}"
