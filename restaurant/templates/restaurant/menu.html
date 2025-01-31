@@ -1,7 +1,8 @@
 {% extends 'restaurant/base.html' %}
 
 {% block content %}
-    <h1>Our Menu</h1>
+{% block title %}Menu{% endblock %}
+
     {% if menu %}
         <div class="menu-items">
             {% for item in menu %}
