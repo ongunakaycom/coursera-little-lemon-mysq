@@ -1,10 +1,29 @@
-/* static/css/styles.css */
-
-/* Basic Styles */
-body {
-    font-family: Arial, sans-serif;
+/* Basic Reset */
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Flexbox for full-page layout */
+.container, .row, .reservation-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Main Content */
+main {
+    flex-grow: 1;
+    padding: 20px;
+    text-align: center;
+    overflow-y: auto;
+    margin-top: 80px;  /* Space for fixed header */
 }
 
 /* Header */
@@ -40,49 +59,60 @@ nav a {
 
 nav a:hover {
     background-color: #333;
-    color: #fff;
+    border-radius: 4px; /* Optional: Adds rounded corners on hover */
 }
 
-/* Content */
-
-/* Flex container for the reservation section */
-.reservation-section {
-    display: flex;
-    flex-direction: column;  /* Stacks items vertically */
-    align-items: center;     /* Centers content horizontally */
-    justify-content: center; /* Centers content vertically (optional) */
-    gap: 20px;               /* Adds space between elements */
-    padding: 40px;           /* Adds padding around the content */
-    max-width: 900px;        /* Optional: Limit the max width of the section */
-    margin: 0 auto;          /* Centers the section in the container */
-}
-/* Style for the reservation title */
-.reservation-title {
-    font-size: 2rem; /* Sets the font size for the title */
-    text-align: center; /* Centers the text */
-    color: #333; /* Text color */
-    margin-bottom: 10px; /* Adds space below the title */
-}
-
-/* Style for the reservation description text */
-.reservation-text {
-    font-size: 1.2rem; /* Sets the font size for the paragraph */
-    text-align: center; /* Centers the paragraph text */
-    color: #666; /* Lighter text color */
-    max-width: 600px; /* Optional: limits the width of the text */
-}
-
-main {
-    margin-top: 80px; /* Space for the fixed header */
-    padding: 20px;
+/* Booking Section */
+.booking-section {
+    flex-grow: 1;
+    padding: 40px 0;
     text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-/* Full-width section styling */
+.booking-title {
+    font-size: 2rem;
+}
+
+.booking-text {
+    font-size: 1.2rem;
+}
+
+#booking-form {
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Reservation Section */
+.reservation-section {
+    gap: 20px;
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.reservation-title {
+    font-size: 2rem;
+    text-align: center;
+    color: #333;
+}
+
+.reservation-text {
+    font-size: 1.2rem;
+    text-align: center;
+    color: #666;
+    max-width: 600px;
+}
+
+/* Full-width Section */
 .full-width-section {
     width: 100%;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
     padding: 20px;
 }
 
@@ -91,6 +121,7 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* Menu Items */
 .menu-item {
     background-color: #f2f2f2;
     border-radius: 8px;
@@ -118,13 +149,39 @@ h2 {
 
 /* Footer */
 footer {
+    width: 100%;
     background-color: #333;
     color: white;
-    text-align: center;
     padding: 20px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    text-align: center;
+    margin-top: auto;  /* Push footer to the bottom */
 }
 
+/* Ensure the section takes full viewport height and the content is centered */
+.full-height {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adjust height and padding for the Time Slot picker */
+.custom-time-slot input {
+    height: 50px; /* Increase input height for better visibility */
+    padding: 15px; /* Add more padding inside the input field */
+}
+
+/* Footer will not overlap anymore, add padding at the bottom */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    margin-top: auto; /* Ensure footer stays at the bottom */
+}
+
+main {
+    flex: 1; /* Ensures main content takes the remaining space */
+}
