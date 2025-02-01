@@ -44,7 +44,7 @@ def booking_submission(request):
 
         # Prevent double booking
         if Booking.objects.filter(reservation_date=reservation_date, reservation_time=reservation_time).exists():
-            messages.error(request, "This time slot is already booked. Please choose another.")
+            messages.error(request, "The selected time slot is already booked. Please choose a different time.")
             return redirect("restaurant:reservations")  # Redirect to reservations page
 
         # Save new booking if slot is available
@@ -115,8 +115,10 @@ def get_booked_slots(request):
     if not parsed_date:
         return JsonResponse({"error": "Invalid date format"}, status=400)
 
+    # Get all booked slots for the given date
     booked_slots = Booking.objects.filter(reservation_date=parsed_date).values_list('reservation_time', flat=True)
 
+    # Return the list of booked time slots
     return JsonResponse({"booked_slots": list(booked_slots)})
 
 # DRF Views

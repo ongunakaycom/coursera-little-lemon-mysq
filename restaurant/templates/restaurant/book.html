@@ -90,6 +90,10 @@
         allowInput: true,     // Allow manual input
         altInput: true,       // Show a user-friendly date format in the input
         altFormat: "F j, Y",  // Display format: e.g., "January 1, 2024"
+        onChange: function(selectedDates, dateStr, instance) {
+            // When the date changes, call the API to get booked slots for that date
+            fetchBookedSlots(dateStr);
+        }
     });
 
     // Function to generate time slots from 10:00 AM to 8:00 PM (Hourly)
@@ -111,10 +115,53 @@
         return `${hour}:00 ${ampm}`;
     }
 
+    // Fetch booked slots for a given date from the API
+    function fetchBookedSlots(date) {
+        // Clear previous slot states
+        const timeSelect = document.getElementById('id_reservation_time');
+        Array.from(timeSelect.options).forEach(option => {
+            option.disabled = false; // Enable all options initially
+        });
+
+        // Make an API request to get booked slots
+        fetch(`/api/get_booked_slots/?date=${date}`)
+            .then(response => response.json())
+            .then(data => {
+                const bookedSlots = data.booked_slots;
+
+                // Disable time slots that are already booked
+                Array.from(timeSelect.options).forEach(option => {
+                    if (bookedSlots.includes(option.value)) {
+                        option.disabled = true; // Disable booked slots
+                    }
+                });
+
+                // Check if the selected time is booked
+                const selectedTime = document.getElementById('id_reservation_time').value;
+                const isBooked = bookedSlots.includes(selectedTime);
+
+                const alertBox = document.getElementById("fully-booked-alert");
+                const submitButton = document.getElementById("submit-button");
+
+                if (isBooked) {
+                    alertBox.classList.remove("d-none");
+                    alertBox.classList.add("show"); // Add show class for smooth transition
+                    submitButton.disabled = true;
+                } else {
+                    alertBox.classList.add("d-none");
+                    alertBox.classList.remove("show"); // Remove show class for smooth transition
+                    submitButton.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching booked slots:', error);
+            });
+    }
+
     // Initialize time slots when page loads
     generateTimeSlots();
 
-    // Handle fully booked time slots
+    // Handle fully booked time slots (based on user selection)
     document.getElementById('id_reservation_time').addEventListener("change", function () {
         const selectedTime = this.value;
         const isBooked = Array.from(this.options).find(option => option.value === selectedTime).disabled;
@@ -132,6 +179,9 @@
             submitButton.disabled = false;
         }
     });
+
+    // Initial fetch of booked slots for today's date
+    fetchBookedSlots('today');
 </script>
 
 {% endblock %}
