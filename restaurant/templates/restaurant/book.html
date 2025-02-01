@@ -21,7 +21,6 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
-
             <!-- Booking Form -->
             <form method="POST" id="booking-form" class="bg-light p-4 rounded shadow">
                 {% csrf_token %}
@@ -43,6 +42,9 @@
                     <label for="id_reservation_time" class="form-label">Reservation Time:</label>
                     <select class="form-control" id="id_reservation_time" name="reservation_time">
                         <!-- Time options will be dynamically added -->
+                        {% for value, display in form.reservation_time.field.choices %}
+                            <option value="{{ value }}">{{ display }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -51,6 +53,7 @@
                     <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
                 </div>
             </form>
+
         </div>
     </div>
 </section>

@@ -26,8 +26,8 @@ def menu_item(request, pk):
 
 # Reservation Views
 def reservations(request):
-    bookings = Booking.objects.all()
-    return render(request, "restaurant/reservations.html", {"bookings": bookings})
+    # Your logic for displaying reservations
+    return render(request, 'restaurant/reservations.html')
 
 def booking_confirmation(request):
     return render(request, 'restaurant/confirmation.html')
