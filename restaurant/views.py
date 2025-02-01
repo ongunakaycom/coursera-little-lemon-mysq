@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from .models import MenuItem, Table, Booking
 from django.contrib import messages
 from django.utils.dateparse import parse_date
-from restaurant.serializers import MenuItemSerializer, BookingSerializer  # Import both serializers
+from restaurant.serializers import MenuItemSerializer, BookingSerializer
 
 # Views for general pages
 def home(request):
@@ -31,6 +31,15 @@ def reservations(request):
 
 def booking_confirmation(request):
     return render(request, 'restaurant/confirmation.html')
+
+def reservations_api(request):
+    bookings = Booking.objects.all().values()
+    return JsonResponse(list(bookings), safe=False)
+
+def booking_submission(request):
+    if request.method == "POST":
+        # Process booking form (save data, check availability, etc.)
+        return redirect('restaurant:reservations')  # Redirect directly
 
 def book_table(request):
     if request.method == 'POST':
