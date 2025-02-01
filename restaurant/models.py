@@ -38,18 +38,18 @@ class MenuItem(models.Model):
     def __str__(self):
         return f"{self.get_category_display()}: {self.name}"
 
-
-# Booking model
 class Booking(models.Model):
     first_name = models.CharField(max_length=100)
     reservation_date = models.DateField()
-    reservation_time = models.CharField(max_length=5)  # Store as a string (e.g., "10:00")
-    
-    # Optional field for table, can be left blank if you don't want to assign a table
+    reservation_time = models.CharField(max_length=5)  # Stored as a string (e.g., "10:00")
     table = models.ForeignKey('Table', on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('reservation_date', 'reservation_time')  # Enforce unique reservations per slot
 
     def __str__(self):
         return f"Booking for {self.first_name} on {self.reservation_date} at {self.reservation_time}"
+
 
 
 # Helper function to generate dynamic time slots

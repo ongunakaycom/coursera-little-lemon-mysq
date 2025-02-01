@@ -38,8 +38,26 @@ def reservations_api(request):
 
 def booking_submission(request):
     if request.method == "POST":
-        # Process booking form (save data, check availability, etc.)
-        return redirect('restaurant:reservations')  # Redirect directly
+        first_name = request.POST.get("first_name")
+        reservation_date = request.POST.get("reservation_date")
+        reservation_time = request.POST.get("reservation_time")  # Stored as string (e.g., "10:00")
+
+        # Prevent double booking
+        if Booking.objects.filter(reservation_date=reservation_date, reservation_time=reservation_time).exists():
+            messages.error(request, "This time slot is already booked. Please choose another.")
+            return redirect("restaurant:reservations")  # Redirect to reservations page
+
+        # Save new booking if slot is available
+        Booking.objects.create(
+            first_name=first_name,
+            reservation_date=reservation_date,
+            reservation_time=reservation_time
+        )
+
+        messages.success(request, "Your reservation has been successfully booked!")
+        return redirect("restaurant:reservations")
+
+    return render(request, "restaurant/book.html")
 
 def book_table(request):
     if request.method == 'POST':
@@ -84,25 +102,22 @@ def check_availability(request):
     if not date or not time:
         return JsonResponse({"error": "Date and time parameters are required."}, status=400)
 
-    if Booking.objects.filter(reservation_date=date, reservation_time=time).exists():
-        return JsonResponse({"available": False})
-    return JsonResponse({"available": True})
+    is_booked = Booking.objects.filter(reservation_date=date, reservation_time=time).exists()
+
+    return JsonResponse({"available": not is_booked})
 
 def get_booked_slots(request):
     date = request.GET.get('date')
     if not date:
         return JsonResponse({"error": "No date provided"}, status=400)
 
-    try:
-        parsed_date = parse_date(date)
-        if not parsed_date:
-            return JsonResponse({"error": "Invalid date format"}, status=400)
+    parsed_date = parse_date(date)
+    if not parsed_date:
+        return JsonResponse({"error": "Invalid date format"}, status=400)
 
-        booked_slots = Booking.objects.filter(reservation_date=parsed_date).values_list('reservation_time', flat=True)
-        return JsonResponse({"booked_slots": list(booked_slots)})
+    booked_slots = Booking.objects.filter(reservation_date=parsed_date).values_list('reservation_time', flat=True)
 
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"booked_slots": list(booked_slots)})
 
 # DRF Views
 class MenuItemView(generics.ListCreateAPIView):
