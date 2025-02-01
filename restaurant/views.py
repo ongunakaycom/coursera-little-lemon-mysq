@@ -1,20 +1,14 @@
-# F:\HDD\GitHub\coursera-little-lemon-mysql\restaurant\views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from rest_framework import generics, permissions
 from rest_framework.exceptions import ValidationError
+
 from .models import MenuItem, Table, Booking
-from .forms import BookingForm
-from .models import Booking
-from . import serializers
 from django.contrib import messages
 from django.utils.dateparse import parse_date
-from django.http import JsonResponse
-from django.contrib import messages
-
+from restaurant.serializers import MenuItemSerializer, BookingSerializer  # Import both serializers
 
 # Views for general pages
-
 def home(request):
     menu_items = MenuItem.objects.filter(available=True)
     return render(request, "restaurant/home.html", {"menu_items": menu_items})
@@ -30,7 +24,6 @@ def menu_item(request, pk):
     menu_item = get_object_or_404(MenuItem, pk=pk)
     return render(request, 'restaurant/menu_item.html', {'menu_item': menu_item})
 
-
 # Reservation Views
 def reservations(request):
     bookings = Booking.objects.all()
@@ -39,9 +32,11 @@ def reservations(request):
 def booking_confirmation(request):
     return render(request, 'restaurant/confirmation.html')
 
-
 def book_table(request):
     if request.method == 'POST':
+        # Import BookingForm locally inside the function
+        from .forms import BookingForm
+        
         form = BookingForm(request.POST, user=request.user)
         if form.is_valid():
             booking = form.save()
@@ -52,12 +47,13 @@ def book_table(request):
             print("Form errors:", form.errors)  # Debugging output
             messages.error(request, 'There were some errors in your form submission.')
     else:
+        # Import BookingForm here as well
+        from .forms import BookingForm
         form = BookingForm(user=request.user)
 
     return render(request, 'restaurant/book.html', {'form': form})
 
 # Helper function for checking table availability
-
 def get_available_table(reservation_slot, guests):
     available_tables = Table.objects.filter(seats__gte=guests)
 
@@ -70,11 +66,7 @@ def get_available_table(reservation_slot, guests):
 
     raise ValidationError("No available tables for the requested time slot.")
 
-
 # API-related views
-
-# views.py
-
 def check_availability(request):
     """Check if a time slot is available for a given date."""
     date = request.GET.get('date')
@@ -106,7 +98,7 @@ def get_booked_slots(request):
 # DRF Views
 class MenuItemView(generics.ListCreateAPIView):
     queryset = MenuItem.objects.all()
-    serializer_class = serializers.MenuItemSerializer
+    serializer_class = MenuItemSerializer  # Use the imported MenuItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
@@ -115,12 +107,12 @@ class MenuItemView(generics.ListCreateAPIView):
 
 class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MenuItem.objects.all()
-    serializer_class = serializers.MenuItemSerializer
+    serializer_class = MenuItemSerializer  # Use the imported MenuItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class BookingView(generics.ListCreateAPIView):
-    serializer_class = serializers.BookingSerializer
+    serializer_class = BookingSerializer  # Use the imported BookingSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -135,14 +127,3 @@ class BookingView(generics.ListCreateAPIView):
         if Booking.objects.filter(reservation_date=reservation_date, reservation_time=reservation_time).exists():
             raise ValidationError("This slot is already booked.")
         serializer.save(user=self.request.user)
-
-# Custom permissions for admin-only operations
-
-class IsAdminOrReadOnly(permissions.BasePermission):
-    """
-    Custom permission class for read-only access to non-admin users.
-    """
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:  # SAFE_METHODS = ["GET", "HEAD", "OPTIONS"]
-            return request.user.is_authenticated
-        return request.user.is_staff  # Only admins can create or modify
